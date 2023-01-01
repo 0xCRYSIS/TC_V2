@@ -1,0 +1,22 @@
+<launch>
+
+    <!-- launch params from params.yaml -->
+    <rosparam file="$(find trajectory_correlation)/config/params.yaml" />
+
+    <!-- Launch trajectory correlation node [cpp]-->
+    <!-- <node pkg="trajectory_correlation" name="trajectory_correlation" type="trajectory_correlation" output="screen" /> -->
+
+    <!-- launch rviz -->
+    <node pkg="rviz" name="rviz" type="rviz" args="-d /home/tharun/vins_ws/src/trajectory_correlation/config/test.rviz"/>
+
+    <!-- Launch trajectory correlation node [python]-->
+    <node pkg="trajectory_correlation" name="trajectory_correlation" type="TrajectoryCorrelationNode.py" output="screen" />
+
+    <!-- launching fake vo node and fake gps node to publish data -->
+    <node pkg="trajectory_correlation" name="fake_vo_node" type="fake_vo_node" output="screen" />
+    <node pkg="trajectory_correlation" name="fake_gps_node" type="fake_gps_node" output="screen" />
+
+    <!-- tf to test th fake gps and vo -->
+    <node pkg="tf" name="static_transform_publisher" type="static_transform_publisher" args="0 0 0 0 0 0 world odom 100"/>
+
+</launch>
